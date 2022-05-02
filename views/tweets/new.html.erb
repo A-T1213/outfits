@@ -1,0 +1,19 @@
+    <%= stylesheet_link_tag 'new', :media => "all" %>
+<div class="new">
+    <h3>Tweet</h3>
+    <div class="post-container">
+            <%= form_for(@tweet, :url => { controller:'tweets', action:'create'})do |f| %>
+                <%=  f.label :投稿内容 %>
+                <br>
+                    <%= f.text_field :body, :size => 140 %>
+                        <div class="field">
+                            <%= f.label :image %>
+        <%= f.file_field :image %>
+    </div>
+        <h4>＊画像、内容を含まない投稿はできません</h4>
+            <div class="submit-button">
+                <%= f.submit "submit" %>
+            </div>
+        <% end %>
+    </div>
+</div>

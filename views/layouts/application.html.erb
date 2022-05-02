@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Outfitips</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.4/css/all.css">    
+  </head>
+
+<body>
+  <header>
+
+    <h1>OUTFITS</h1>
+      <% if user_signed_in? %>
+      <div class="hamburger-menu">
+        <input type="checkbox" id="menu-btn-check">
+        <label for="menu-btn-check" class="menu-btn"><span></span></label>
+        <div class="menu-content">
+          <ul>
+            <li>
+              <a><%= link_to "ホーム", tweets_path %></a>
+            </li>
+            <li>
+              <a><%= link_to "マイページ", user_path(current_user.id) %></a>
+            </li>
+            <%#<li>
+              <a><%= link_to "新規投稿",new_tweet_path %></a>
+            </li> 
+
+            <li>
+                    <a><%= link_to "レビュー一覧", reviews_index_path %></a>
+                </li>
+                <li>
+                    <a><%= link_to "レビュー投稿", reviews_new_path %></a>
+                </li>
+                <li>
+                    <a><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    <%else%>
+      <div class="hamburger-menu">
+        <input type="checkbox" id="menu-btn-check">
+        <label for="menu-btn-check" class="menu-btn"><span></span></label>
+        <div class="menu-content">
+      <ul>
+      <li>
+          <a><%= link_to "ログイン", tweets_path %></a>
+      </li>
+      <li>
+          <a><%= link_to "新規登録", new_user_registration_path %></a>
+      </li>
+      </ul>
+        </div>
+      </div>
+    <% end %>
+  </header>
+    <main>
+    <%= yield %>
+    </main>
+    <footer>
+    <small>copyright © 2022 Taketo Ashida All Rights Rserved.</small>
+  </footer>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="/js/script.js"></script>
+</body>
+
+</html>

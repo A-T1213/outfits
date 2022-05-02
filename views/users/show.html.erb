@@ -1,0 +1,121 @@
+
+<%= stylesheet_link_tag 'usershow', :media => "all" %>
+<div class="Usershow">
+    <div class="StudentID">
+        <div class="user-container">
+            <div class="title-area">
+                    <h1>USER ID</h1>
+            </div>
+                <div class="user-shell">
+                    <div class="icon-circle" >
+                        <%= image_tag @user.image_url, size: "250x200" if @user.image? %> 
+                    </div>
+                    <div class= "user-detail">
+                        <% if current_user.id == @user.id %>
+                        <div class="name">
+                            <p>名前  <h3><%= @user.name %></h3></p>
+                        </div>
+                        <div class="grade">
+                            <p>学年 <h4><%= @user.grade %></h4></p>
+                        </div>
+                        <div class="brand">
+                            <p>ブランド <h5><%= @user.brand %></h5></p>
+                        </div>
+                        <div class="e-mail">
+                            <p>eメール  <h6><%= @user.email %></h6></p>
+                        </div>
+                        <% if current_user.id == @user.id %>
+                            <%= link_to "編集する", edit_user_registration_path %>
+                        <% end %>
+                        <%else%>
+                        <div class="name">
+                            <p>名前  <h3><%= @user.name %></h3></p>
+                        </div>
+                        <div class="grade">
+                            <p>学年  <h4><%= @user.grade %></h4></p>
+                        </div>
+                        <div class="brand">
+                            <p>ブランド  <h5><%= @user.brand %></h5></p>
+                        </div>
+                        <%end%>
+                        <%= render 'relationships/follow_button', user: @user %>
+                    </div>
+                </div>
+            <div class="barcode">
+                <div class="barcode-area">
+                    <p>all</p>
+                </div>
+                <p>*本証明証は本サイトのユーザーである事を証明する</p>
+            </div>
+            <div class="profile-area">
+                <div class="profile-content">
+                    <%= @user.profile %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br> 
+</div>
+<div class="user-ndex">
+<h2>ユーザーの投稿</h2>
+<h3>user's table</h3>
+</div>
+    <div class="tweets-container">
+        <% @tweets.each do |t| %>
+            <div class="tweet">
+                <%= image_tag t.image_url, size: "250x300" if t.image? %>
+                    <br>
+                    <div class="console">
+                        <%= link_to "\uf129", tweet_path(t.id), class: "fa" %>
+                        <% if user_signed_in? && current_user.id == t.user_id %>      
+                            <%= link_to "\uf044", edit_tweet_path(t.id), class: "fa"   %>
+                            <%= link_to tweet_path(t.id), method: :delete do %>
+                                <i class="far fa-trash-alt"></i>
+                            <%end%>
+                        <% end %> 
+                    </div>
+                    <br>
+                <div class="tweets-body">
+                    <%= t.body %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+
+<h2>ユーザーがいいねした投稿</h2>
+<h3>liked</h3>
+    <div class="tweets-container">
+        <% @user.liked_tweets.each do |t| %>
+            <div class="tweet">
+                    <%= image_tag t.image_url, size: "250x300" if t.image? %>
+                    <br>
+                        <div class="console">
+                            <%= link_to "\uf129", tweet_path(t.id), class: "fa"    %>
+                                <% if user_signed_in? && current_user.id == t.user_id %>      
+                                    <%= link_to "\uf044", edit_tweet_path(t.id), class: "fa"   %>
+                                    <%= link_to tweet_path(t.id), method: :delete do %>
+                                        <i class="far fa-trash-alt"></i>
+                                    <%end%>
+                                <% end %> 
+                                <% if user_signed_in? %>
+                                <% if current_user.already_liked?(t) %>
+                                    <%= link_to tweet_like_path(id: t.id, tweet_id: t.id), method: :delete do %>
+                                        <i class="fas fa-heart"></i><%= t.likes.count %>
+                                    <% end %>
+                                <% else %>
+                                    <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id), method: :post do %>
+                                        <i class="far fa-heart"></i><%= t.likes.count %>
+                                    <% end %>
+                                <% end %>
+                            <% else %>
+                                <i   i class="far fa-heart"></i><%= t.likes.count %>
+                            <% end %>
+                        </div>
+                    <br>
+                <div class="tweets-body">
+                    <%= t.body %>
+                </div>
+            </div>
+        <% end %>
+        <p id="page-top"><a href="#">Top</a></p>
+    </div>

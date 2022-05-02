@@ -1,0 +1,26 @@
+<head>
+<%= stylesheet_link_tag 'review-new', :media => "all" %>
+</head>
+<body>
+  <div class="review-new">
+    <h3>Post Review</h3>
+    <%= form_for @review do |f| %>
+    <%= f.label :title %>
+    <%= f.text_field :status, :size => 140 %>
+    <br>
+    <%= f.label :price %>
+    <%= f.text_field :status, :size => 140 %>
+    <br>
+    <%= f.label :name %>
+    <%= f.text_field :status, :size => 140 %>
+    <br>
+    <%= f.label :body %>
+    <%= f.text_field :body, :size => 140 %>
+    <div class="submit-button">
+      <%= f.submit "submit" %>
+    </div>
+    <% end %>
+  </div>
+  <%= link_to "レビュー一覧に戻る", reviews_index_path %>
+  <p id="page-top"><a href="#">Top</a></p>
+</body>

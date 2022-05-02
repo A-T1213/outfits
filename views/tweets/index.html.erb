@@ -1,0 +1,120 @@
+<head>
+<%= stylesheet_link_tag 'index', :media => "all" %>
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script rel="stylesheet">
+<link href="https://fonts.googleapis.com/earlyaccess/hannari.css" rel="stylesheet">
+<link href="" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <%= form_tag '/tweets', :method => 'get' do %>
+        <%= text_field_tag :search, params[:search], placeholder: "\uf002 search", class: "fa" %>
+    <% end %>
+
+
+<div class="index">
+    <h2>投稿一覧</h2>
+    <h3>table</h3>
+</div>
+    <div class="tweets-container">
+        <% @tweets.each do |t| %>
+            <div class="tweet">
+                <div class="user-name">
+                    <figure class="icon-circle" >
+                    <%= image_tag t.user.image_url, size: "250x200" %> 
+                    </figure>
+                    <a href="/users/<%= t.user.id %>"><%= t.user.name %></a>
+                </div>
+                    <%= image_tag t.image_url, size: "250x300" if t.image? %>
+                    <br>
+                    <div class= "console">
+                        <%= link_to "\uf129", tweet_path(t.id), class: "fa"  %>
+                            <% if user_signed_in? && current_user.id == t.user_id %>      
+                                    <%= link_to "\uf044", edit_tweet_path(t.id), class: "fa" %>
+                                <%= link_to tweet_path(t.id), method: :delete do %>
+                                    <i class="far fa-trash-alt"></i>
+                                <%end%>
+                            <% end %> 
+                        <% if user_signed_in? %>
+                            <% if current_user.already_liked?(t) %>
+                                <%= link_to tweet_like_path(id: t.id, tweet_id: t.id), method: :delete do %>
+                                    <i class="fas fa-heart"></i><%= t.likes.count %>
+                                <% end %>
+                            <% else %>
+                                <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id), method: :post do %>
+                                    <i class="far fa-heart"></i><%= t.likes.count %>
+                                <% end %>
+                            <% end %>
+                        <% else %>
+                            <i   i class="far fa-heart"></i><%= t.likes.count %>
+                        <% end %>
+                    </div>
+                        <br>
+                    <div class="tweets-body">
+                        <%= t.body %>
+                    </div>
+            </div>
+        <% end %>
+    </div>
+    <div class="rankingindex">
+    <h4>ランキング</h4>
+    <h5>ranking</h5>
+    </div>
+<div class="ranking-container">
+    <% @rank_tweets.each.with_index(1) do |t, i| %>
+        <div class="rannking-shell">
+            第<%= i %>位
+            <div class="ranking">
+                    <div class="user-name">
+                    <figure class="icon-circle" >
+                    <%= image_tag t.user.image_url, size: "250x200" %> 
+                    </figure>
+                    <a href="/users/<%= t.user.id %>"><%= t.user.name %></a>
+                </div>
+                        <%= image_tag t.image_url, size: "250x300" if t.image? %>
+                    <br>
+                    <div class= "console">
+                        <%= link_to "\uf129", tweet_path(t.id), class: "fa"  %>
+                        <% if user_signed_in? && current_user.id == t.user_id %>      
+                                <%= link_to "\uf044", edit_tweet_path(t.id), class: "fa" %>
+                            <%= link_to tweet_path(t.id), method: :delete do %>
+                                <i class="far fa-trash-alt"></i>
+                            <%end%>
+                        <% end %> 
+                    <% if user_signed_in? %>
+                        <% if current_user.already_liked?(t) %>
+                            <%= link_to tweet_like_path(id: t.id, tweet_id: t.id), method: :delete do %>
+                                <i class="fas fa-heart"></i><%= t.likes.count %>
+                            <% end %>
+                        <% else %>
+                            <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id), method: :post do %>
+                                <i class="far fa-heart"></i><%= t.likes.count %>
+                            <% end %>
+                        <% end %>
+                    <% else %>
+                        <i   i class="far fa-heart"></i><%= t.likes.count %>
+                    <% end %>
+                    </div>
+                        <br>
+                    <div class="ranking-body">
+                    <%= t.body %>
+                    </div>
+                </div>
+        </div>
+    <%end%>
+</div>
+<div class="no-reasons">
+    <div class="reviews">
+        <a><%= link_to image_tag("review.jpg",size:"300x200"), reviews_index_path %></a>
+        <h6>review</h6>
+    </div>
+
+    <div class="mypage">
+        <a><%= link_to image_tag("mypage.jpg",size:"300x200"), user_path(current_user.id) %></a>
+        <h6>mypage</h6>
+    </div>
+</div>
+<p id="page-top"><a href="#">Top</a></p>
+</body>

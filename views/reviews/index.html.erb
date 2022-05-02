@@ -1,0 +1,20 @@
+<body>
+<%= stylesheet_link_tag 'reviews', :media => "all" %>
+    <h3>Review一覧</h3>
+    <%= link_to "新規投稿へ", reviews_new_path %>
+    <div class="reviews-container">
+        <% @reviews.each do |t| %>
+            <div class="review">
+            <figure class="icon-circle" >
+                <%= image_tag t.user.image_url, size: "250x200" %> 
+            </figure>
+                <%= t.title %>
+                <%= t.price %>
+                <%= t.body %>
+                <%=t.status %>
+                <%= t.created_at %>
+            </div>
+        <% end %>
+    </div>
+    <p id="page-top"><a href="#">Top</a></p>
+</body>

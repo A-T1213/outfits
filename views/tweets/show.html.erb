@@ -1,0 +1,71 @@
+<head>
+<%= stylesheet_link_tag 'show', :media => "all" %>
+</head>
+<h2>投稿詳細</h2>
+<h3>detail</h3>
+<div class="show"> 
+    <div class="tweet-content"> 
+        <div class="img">
+            <%= image_tag @tweet.image_url, size: "568x597" if @tweet.image? %>
+        </div>
+        <div class="blank">
+            <div class="content">
+                <div class="tweet-body">
+                    <div class="comment-name">
+                        <figure class="icon-circle" >
+                            <%= image_tag @tweet.user.image_url, size: "250x200" %> 
+                        </figure>
+                        <%= @tweet.user.name  %>
+                    </div>
+                    <br>
+                    <div class="tweet-body&time">
+                    <%= @tweet.body %>
+                    <br>
+                    <%= @tweet.created_at %>
+                    </div>
+                </div>   
+                <% @comments.each do |c| %>
+                <br>
+                    <div class="comment-content">  
+                        <figure class="icon-circle" >
+                            <%= image_tag c.user.image_url, size: "250x200" %> 
+                        </figure>
+                        <div class="comment-body">
+                            <div class="comment-name">
+                                <%= c.user.name unless c.user.blank? %>
+                            </div>
+                            <br>
+                            <%= c.content %>
+                            <br>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+            <div class="comment-form">
+                    <div class="comment-area">
+                        <% if user_signed_in? %>
+                    <% if current_user.already_liked?(@tweet) %>
+                        <%= link_to tweet_like_path(@tweet), method: :delete do %>
+                            <i class="fas fa-heart"></i><%= @tweet.likes.count %>    
+                        <% end %>
+                    <% else %>
+                        <%= link_to tweet_likes_path(@tweet), method: :post do %>
+                            <i class="far fa-heart"></i><%= @tweet.likes.count %>
+                        <% end %>
+                    <% end %>
+                <% else %>
+                            <i class="far fa-heart"></i><%= @tweet.likes.count %>
+                        <% end %>
+                        <% if user_signed_in? %>
+                            <%= form_with(model: [@tweet, @comment], local: true) do |f| %>
+                            <%= f.text_field :content %>
+                                <%= button_tag type: "submit" do %>
+                            <i class="far fa-comments"></i> コメントする
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
